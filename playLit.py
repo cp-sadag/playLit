@@ -3,6 +3,8 @@ import streamlit.components.v1 as components
 import numpy as np
 import pandas as pd
 from io import BytesIO
+import matplotlib.pyplot as plt
+import autoML
 
 DATE_COLUMN = 'date/time'
 DATA_URL = ('https://s3-us-west-2.amazonaws.com/'
@@ -35,6 +37,7 @@ st.title('The Data App')
 # Sidebar Options & File Uplaod
 st.sidebar.title('Data Explorer')
 st.sidebar.write('Load data using file browser or specify full path to file to use the app.')
+st.sidebar.write('c:\\user\\Downloads\\abc.csv or https://raw.githubusercontent.com/selva86/datasets/master/Cars93_miss.csv')
 #if st.sidebar.checkbox('WSL'):
     #st.write(uploadFileName)
     #uploadFileName = uploadFileName[0].lower() + uploadFileName[1:]
@@ -88,10 +91,30 @@ if uploadFile is not None:
     #st.subheader('Map of all pickups at %s:00' % hour_to_filter)
     #st.map(filtered_data)
 
-add_selectbox = st.sidebar.selectbox(
+option = st.sidebar.selectbox(
     "Select Data Upload Option",
-   ("Data Preview", "Exploratory Data Analysis", "Data Engineering")
+   ("Preview", "Exploratory Analysis", "Engineering", "AutoML", "Visualization")
    )
+
+if option=='Visualization':
+    #st.plotly_chart(data, x=data[data.columns[2]],y=data[data.columns[2]])
+    fig, ax = plt.subplots()
+    ax.hist(data, bins=20)
+    st.pyplot(fig)
+    #HtmlFile = open("test.html", 'r', encoding='utf-8')
+    #source_code = HtmlFile.read() 
+    #components.html(source_code, height = 900,width=900)
+
+if option=='AutoML':
+    #data = pd.read_csv("datasets/googleplaystore.csv")
+    #st.write(data[data.columns[0:-1]])
+    #st.write(data[data.columns[-1]])
+    st.write(autoML.runAutoML(data[data.columns[0:-1]], data[data.columns[-1]]))
+    X_train, X_test, y_train, y_test = autoML.setData(data[data.columns[0:-1]], data[data.columns[-1]])
+    automl = autoML.autoMLSearch(X_train, y_train)
+    st.write(automl.search())
+    st.write(automl.rankings)
+    st.write(autoML.bestPipeline(X_train, y_train, X_test, automl))
 
 #df = pd.DataFrame({
       #'first column': [1, 2, 3, 4],
