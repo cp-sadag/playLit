@@ -4,6 +4,10 @@ import numpy as np
 import pandas as pd
 from io import BytesIO
 import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings
+warnings.filterwarnings('ignore')
+
 import autoML
 
 DATE_COLUMN = 'date/time'
@@ -45,7 +49,9 @@ st.sidebar.write('c:\\user\\Downloads\\abc.csv or https://raw.githubusercontent.
 
 dataLoadStatus = st.sidebar.text('')
 dataDescription = st.text('')
+st.header("Base Data")
 dataFrame = st.dataframe(None)
+st.header("Data Description")
 dataFrameDesc = st.dataframe(None)
 #loadedData = st.dataframe(None)
 uploadFileName = st.sidebar.text_input('Input File Name')
@@ -98,12 +104,26 @@ option = st.sidebar.selectbox(
 
 if option=='Visualization':
     #st.plotly_chart(data, x=data[data.columns[2]],y=data[data.columns[2]])
-    fig, ax = plt.subplots()
-    ax.hist(data, bins=20)
-    st.pyplot(fig)
-    #HtmlFile = open("test.html", 'r', encoding='utf-8')
-    #source_code = HtmlFile.read() 
-    #components.html(source_code, height = 900,width=900)
+    #fig, ax = plt.subplots()
+    #ax.hist(data, bins=20)
+    #st.pyplot(fig)
+    st.header("Duplicated Rows")
+    data[data.duplicated()]
+    st.header("Correlation Heatmap")
+    fig, ax = plt.subplots(figsize=(21,9))
+    sns.heatmap(data.corr(), annot = True)
+    #plt.show()
+    st.pyplot(plt)
+    data = pd.read_csv("https://cdn.iisc.talentsprint.com/CDS/Datasets/movies.csv")
+    plt.clf()
+    st.header("Popularity Chart")
+    data.groupby('runtime')['popularity'].mean().plot(figsize = (13,5),xticks=np.arange(0,1000,100))
+    # setup the title of the figure
+    plt.title("Runtime Vs Popularity",fontsize = 14)
+    # setup the x-label and y-label of the plot.
+    plt.xlabel('Runtime',fontsize = 13)
+    plt.ylabel('Average Popularity',fontsize = 13)
+    st.pyplot(plt)
 
 if option=='AutoML':
     #data = pd.read_csv("datasets/googleplaystore.csv")
