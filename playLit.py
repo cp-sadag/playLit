@@ -10,9 +10,9 @@ warnings.filterwarnings('ignore')
 
 import autoML
 
-DATE_COLUMN = 'date/time'
-DATA_URL = ('https://s3-us-west-2.amazonaws.com/'
-                 'streamlit-demo-data/uber-raw-data-sep14.csv.gz')
+#DATE_COLUMN = 'date/time'
+#DATA_URL = ('https://s3-us-west-2.amazonaws.com/'
+                 #'streamlit-demo-data/uber-raw-data-sep14.csv.gz')
 
 #@st.cache
 #def load_data(nrows):
@@ -51,7 +51,7 @@ dataLoadStatus = st.sidebar.text('')
 dataDescription = st.text('')
 st.header("Base Data")
 dataFrame = st.dataframe(None)
-st.header("Data Description")
+st.header("Basic Info")
 dataFrameDesc = st.dataframe(None)
 #loadedData = st.dataframe(None)
 uploadFileName = st.sidebar.text_input('Input File Name')
@@ -60,7 +60,7 @@ if uploadFileName is not None and len(uploadFileName) > 0:
     data = pd.read_csv(uploadFileName)
     if data is not None:
         dataFrame.dataframe(data)
-        dataFrameDesc.dataframe(pd.DataFrame(data.describe(include = "all")))
+        dataFrameDesc.dataframe(pd.DataFrame(data.dtypes))
         dataLoadStatus.text('Loading data...done!')
 
 uploadFile = st.sidebar.file_uploader('Load csv files') #, type=['.las'])
@@ -69,7 +69,7 @@ if uploadFile is not None:
     data = pd.read_csv(BytesIO(uploadFile.getvalue()), sep=",")
     if data is not None:
         dataFrame.dataframe(data)
-        dataFrameDesc.dataframe(pd.DataFrame(data.describe(include = "all")))
+        dataFrameDesc.dataframe(pd.DataFrame(data.dtypes))
         dataLoadStatus.text('Loading data...done!')
 
 #df = load_data(uploadFile)
@@ -102,13 +102,20 @@ option = st.sidebar.selectbox(
    ("Preview", "Exploratory Analysis", "Engineering", "AutoML", "Visualization")
    )
 
+if option=='Exploratory Analysis':
+    st.header("Data Description")
+    st.dataframe(data.describe(include='all'))
+    st.header("Duplicated Rows")
+    data[data.duplicated()]
+    st.header("Null values")
+    data[data.isna().any(axis=1)]
+    st.dataframe(pd.DataFrame(data[data.isna().any(axis=1)].describe(include='all')))
+
 if option=='Visualization':
     #st.plotly_chart(data, x=data[data.columns[2]],y=data[data.columns[2]])
     #fig, ax = plt.subplots()
     #ax.hist(data, bins=20)
     #st.pyplot(fig)
-    st.header("Duplicated Rows")
-    data[data.duplicated()]
     st.header("Correlation Heatmap")
     fig, ax = plt.subplots(figsize=(21,9))
     sns.heatmap(data.corr(), annot = True)
@@ -116,7 +123,7 @@ if option=='Visualization':
     st.pyplot(plt)
     data = pd.read_csv("https://cdn.iisc.talentsprint.com/CDS/Datasets/movies.csv")
     plt.clf()
-    st.header("Popularity Chart")
+    st.header("Popularity Chart (movies.csv)")
     data.groupby('runtime')['popularity'].mean().plot(figsize = (13,5),xticks=np.arange(0,1000,100))
     # setup the title of the figure
     plt.title("Runtime Vs Popularity",fontsize = 14)
