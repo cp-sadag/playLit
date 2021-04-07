@@ -2,4 +2,4 @@ pytest
 pandas-profiling
 streamlit-pandas-profiling
 matplotlib
-evalml
+sweetviz
