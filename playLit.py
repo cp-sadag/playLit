@@ -18,7 +18,7 @@ from pandas_profiling import ProfileReport
 import streamlit.components.v1 as components
 from streamlit_pandas_profiling import st_profile_report
 
-import autoML
+#import autoML
 
 #DATE_COLUMN = 'date/time'
 #DATA_URL = ('https://s3-us-west-2.amazonaws.com/'
@@ -160,16 +160,16 @@ if option=='Visualization':
     plt.ylabel('Average Popularity',fontsize = 13)
     st.pyplot(plt)
 
-if option=='AutoML':
-    #data = pd.read_csv("datasets/googleplaystore.csv")
-    #st.write(data[data.columns[0:-1]])
-    #st.write(data[data.columns[-1]])
-    st.write(autoML.runAutoML(data[data.columns[0:-1]], data[data.columns[-1]]))
-    X_train, X_test, y_train, y_test = autoML.setData(data[data.columns[0:-1]], data[data.columns[-1]])
-    automl = autoML.autoMLSearch(X_train, y_train)
-    st.write(automl.search())
-    st.write(automl.rankings)
-    st.write(autoML.bestPipeline(X_train, y_train, X_test, automl))
+#if option=='AutoML':
+#    #data = pd.read_csv("datasets/googleplaystore.csv")
+#    #st.write(data[data.columns[0:-1]])
+#    #st.write(data[data.columns[-1]])
+#    st.write(autoML.runAutoML(data[data.columns[0:-1]], data[data.columns[-1]]))
+#    X_train, X_test, y_train, y_test = autoML.setData(data[data.columns[0:-1]], data[data.columns[-1]])
+#    automl = autoML.autoMLSearch(X_train, y_train)
+#    st.write(automl.search())
+#    st.write(automl.rankings)
+#    st.write(autoML.bestPipeline(X_train, y_train, X_test, automl))
 
 #df = pd.DataFrame({
       #'first column': [1, 2, 3, 4],
