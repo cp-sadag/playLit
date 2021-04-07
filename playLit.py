@@ -12,7 +12,7 @@ warnings.filterwarnings('ignore')
 import pandas as pd 
 import codecs
 from pandas_profiling import ProfileReport 
-import sweetviz as sv 
+#import sweetviz as sv 
 
 # Components Pkgs
 import streamlit.components.v1 as components
@@ -109,7 +109,7 @@ if uploadFile is not None:
 
 option = st.sidebar.selectbox(
     "Select Data Upload Option",
-   ("Preview", "Exploratory Analysis", "Pandas Profiling", "Sweetviz Profiling", "Engineering", "AutoML", "Visualization")
+   ("Preview", "Exploratory Analysis", "Pandas Profiling", "Engineering", "AutoML", "Visualization")
    )
 
 if option=='Exploratory Analysis':
@@ -130,14 +130,14 @@ if option == "Pandas Profiling":
     profile = ProfileReport(data)
     st_profile_report(profile)
 
-if option == "Sweetviz Profiling":
-    st.subheader("Automated EDA with Sweetviz")
-    report = sv.analyze(data)
-    report.show_html()
-    report_file = codecs.open("SWEETVIZ_REPORT.html",'r')
-    page = report_file.read()
-    components.html(page, width=1000, height=500, scrolling=True)
-    #components.html(page,width=width,height=height,scrolling=True)
+#if option == "Sweetviz Profiling":
+#    st.subheader("Automated EDA with Sweetviz")
+#    report = sv.analyze(data)
+#    report.show_html()
+#    report_file = codecs.open("SWEETVIZ_REPORT.html",'r')
+#    page = report_file.read()
+#    components.html(page, width=1000, height=500, scrolling=True)
+#    #components.html(page,width=width,height=height,scrolling=True)
 
 if option=='Visualization':
     #st.plotly_chart(data, x=data[data.columns[2]],y=data[data.columns[2]])
