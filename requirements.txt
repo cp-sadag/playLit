@@ -1,5 +1,4 @@
 pytest
-sweetviz
 pandas-profiling
 streamlit-pandas-profiling
 matplotlib
