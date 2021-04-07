@@ -3,3 +3,4 @@ evalml
 pandas-profiling
 streamlit-pandas-profiling
 sweetviz
+pytest
