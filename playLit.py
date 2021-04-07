@@ -8,6 +8,16 @@ import seaborn as sns
 import warnings
 warnings.filterwarnings('ignore')
 
+# EDA Pkgs
+import pandas as pd 
+import codecs
+from pandas_profiling import ProfileReport 
+import sweetviz as sv 
+
+# Components Pkgs
+import streamlit.components.v1 as components
+from streamlit_pandas_profiling import st_profile_report
+
 import autoML
 
 #DATE_COLUMN = 'date/time'
@@ -51,8 +61,8 @@ dataLoadStatus = st.sidebar.text('')
 dataDescription = st.text('')
 st.header("Base Data")
 dataFrame = st.dataframe(None)
-st.header("Basic Info")
-dataFrameDesc = st.dataframe(None)
+#st.header("Basic Info")
+#dataFrameDesc = st.dataframe(None)
 #loadedData = st.dataframe(None)
 uploadFileName = st.sidebar.text_input('Input File Name')
 if uploadFileName is not None and len(uploadFileName) > 0:
@@ -60,7 +70,7 @@ if uploadFileName is not None and len(uploadFileName) > 0:
     data = pd.read_csv(uploadFileName)
     if data is not None:
         dataFrame.dataframe(data)
-        dataFrameDesc.dataframe(pd.DataFrame(data.dtypes))
+        #dataFrameDesc.dataframe(pd.DataFrame(data.dtypes))
         dataLoadStatus.text('Loading data...done!')
 
 uploadFile = st.sidebar.file_uploader('Load csv files') #, type=['.las'])
@@ -99,7 +109,7 @@ if uploadFile is not None:
 
 option = st.sidebar.selectbox(
     "Select Data Upload Option",
-   ("Preview", "Exploratory Analysis", "Engineering", "AutoML", "Visualization")
+   ("Preview", "Exploratory Analysis", "Pandas Profiling", "Sweetviz Profiling", "Engineering", "AutoML", "Visualization")
    )
 
 if option=='Exploratory Analysis':
@@ -110,6 +120,24 @@ if option=='Exploratory Analysis':
     st.header("Null values")
     data[data.isna().any(axis=1)]
     st.dataframe(pd.DataFrame(data[data.isna().any(axis=1)].describe(include='all')))
+    data.hist(bins=15, color='blue', edgecolor='black', linewidth=1.0, xlabelsize=8, ylabelsize=8, grid=False)    
+    plt.tight_layout(rect=(0, 0, 2, 2))   
+    plt.suptitle('Univariate Plots', x=0, y=0, fontsize=14)  
+    st.pyplot(plt)
+
+if option == "Pandas Profiling":
+    st.header("Automated EDA with Pandas Profile")
+    profile = ProfileReport(data)
+    st_profile_report(profile)
+
+if option == "Sweetviz Profiling":
+    st.subheader("Automated EDA with Sweetviz")
+    report = sv.analyze(data)
+    report.show_html()
+    report_file = codecs.open("SWEETVIZ_REPORT.html",'r')
+    page = report_file.read()
+    components.html(page, width=1000, height=500, scrolling=True)
+    #components.html(page,width=width,height=height,scrolling=True)
 
 if option=='Visualization':
     #st.plotly_chart(data, x=data[data.columns[2]],y=data[data.columns[2]])
