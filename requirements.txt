@@ -1,4 +1,6 @@
-matplotlib
-evalml
+pytest
+sweetviz
 pandas-profiling
 streamlit-pandas-profiling
+matplotlib
+evalml
