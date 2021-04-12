@@ -60,7 +60,8 @@ st.sidebar.write('c:\\user\\Downloads\\abc.csv or https://raw.githubusercontent.
 dataLoadStatus = st.sidebar.text('')
 dataDescription = st.text('')
 st.header("Base Data")
-dataFrame = st.dataframe(None)
+data = None
+dataFrame = st.dataframe(data)
 #st.header("Basic Info")
 #dataFrameDesc = st.dataframe(None)
 #loadedData = st.dataframe(None)
