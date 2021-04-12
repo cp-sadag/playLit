@@ -61,9 +61,9 @@ dataLoadStatus = st.sidebar.text('')
 dataDescription = st.text('')
 st.header("Base Data")
 dataFrame = st.dataframe(None)
-st.header("Basic Info")
-dataFrameDesc = st.dataframe(None)
-loadedData = st.dataframe(None)
+#st.header("Basic Info")
+#dataFrameDesc = st.dataframe(None)
+#loadedData = st.dataframe(None)
 uploadFileName = st.sidebar.text_input('Input File Name')
 if uploadFileName is not None and len(uploadFileName) > 0:
     dataLoadStatus.text('Loading data...')
@@ -79,7 +79,7 @@ if uploadFile is not None:
     data = pd.read_csv(BytesIO(uploadFile.getvalue()), sep=",")
     if data is not None:
         dataFrame.dataframe(data)
-        dataFrameDesc.dataframe(pd.DataFrame(data.dtypes))
+        #dataFrameDesc.dataframe(pd.DataFrame(data.dtypes))
         dataLoadStatus.text('Loading data...done!')
 
 #df = load_data(uploadFile)
@@ -109,7 +109,7 @@ if uploadFile is not None:
 
 option = st.sidebar.selectbox(
     "Select Data Upload Option",
-   ("Preview", "Exploratory Analysis", "Pandas Profiling", "Engineering", "AutoML", "Visualization")
+   ("Preview", "Pandas Profiling", "Engineering", "AutoML", "Visualization")
    )
 
 if option=='Exploratory Analysis':
