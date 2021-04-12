@@ -128,8 +128,9 @@ if option=='Exploratory Analysis':
 
 if option == "Pandas Profiling":
     st.header("Automated EDA with Pandas Profile")
-    profile = ProfileReport(data)
-    st_profile_report(profile)
+    if data is not None:
+        profile = ProfileReport(data)
+        st_profile_report(profile)
 
 #if option == "Sweetviz Profiling":
 #    st.subheader("Automated EDA with Sweetviz")
